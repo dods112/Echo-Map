@@ -1,0 +1,44 @@
+@extends('layouts.echo')
+
+@section('title', 'Log in · Echo-Map')
+
+@section('content')
+    <h1>Welcome back</h1>
+    <p class="sub">Log in to pin new memories and explore the map.</p>
+
+    @if (session('status'))
+        <div class="flash ok">{{ session('status') }}</div>
+    @endif
+
+    <form method="POST" action="{{ route('login') }}">
+        @csrf
+
+        <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="text" name="email" value="{{ old('email') }}" required autofocus autocomplete="username">
+            @error('email') <div class="error">{{ $message }}</div> @enderror
+        </div>
+
+        <div class="field">
+            <label for="password">Password</label>
+            <input id="password" type="password" name="password" required autocomplete="current-password">
+            @error('password') <div class="error">{{ $message }}</div> @enderror
+        </div>
+
+        <div class="row">
+            <label>
+                <input type="checkbox" name="remember" style="accent-color: var(--signal);">
+                Remember me
+            </label>
+            @if (Route::has('password.request'))
+                <a href="{{ route('password.request') }}">Forgot password?</a>
+            @endif
+        </div>
+
+        <button type="submit" class="btn">Log in</button>
+
+        @if (Route::has('register'))
+            <p class="meta">Don't have an account? <a href="{{ route('register') }}">Register</a></p>
+        @endif
+    </form>
+@endsection
